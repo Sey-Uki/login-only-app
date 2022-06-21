@@ -6,7 +6,7 @@ export const Profile = () => {
       <div className={styles.text}>
         Здравствуйте, <span>steve.jobs@example.com</span>
       </div>
-      <Link to="/">
+      <Link to="/login">
         <button className={styles.button}>Выйти</button>
       </Link>
     </div>
