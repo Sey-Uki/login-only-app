@@ -20,18 +20,6 @@
   margin-bottom: 20px;
 }
 
-.input {
-  background: #F5F5F5;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  color: #232323;
-  height: 60px;
-  border-radius: 8px;
-  border: none;
-  padding: 20px;
-  width: 100%;
-}
 
 .checkbox {
   display: flex;
@@ -43,12 +31,7 @@
 }
 
 .checkbox input {
-  width: 20px;
-  height: 20px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 14px;
+  display: none;
 }
 
 .label {
@@ -91,4 +74,14 @@
   color: #EE6565;
   margin-right: 14px;
   margin-left: 20px;
+}
+
+.customCheckbox {
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 14px;
 }
