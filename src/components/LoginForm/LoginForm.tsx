@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -9,7 +9,11 @@ interface IFormInput {
   password: string;
 }
 
-export const LoginForm = () => {
+interface IProps {
+  setUserName: Dispatch<SetStateAction<string>>;
+}
+
+export const LoginForm = ({ setUserName }: IProps) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -19,7 +23,7 @@ export const LoginForm = () => {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({ defaultValues: { login: "", password: "" } });
 
   const startSubmitting = (callback?: () => void) => {
     setIsLoading(true);
@@ -30,8 +34,11 @@ export const LoginForm = () => {
     }, 2000);
   };
 
-  const onSubmit = () => {
-    startSubmitting(() => navigate("/profile"));
+  const onSubmit = (data: IFormInput) => {
+    startSubmitting(() => {
+      setUserName(data.login);
+      navigate("/profile");
+    });
   };
 
   const onError = () => {
@@ -40,12 +47,13 @@ export const LoginForm = () => {
 
     if (loginValue && passwordValue) {
       startSubmitting();
+
     }
   };
 
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked)
-  }
+    setIsChecked(!isChecked);
+  };
 
   return (
     <div className={styles.formWrapper}>
@@ -91,8 +99,10 @@ export const LoginForm = () => {
           )}
         </div>
         <label className={styles.checkbox}>
-          <input type="checkbox"/>
-          <div className={styles.customCheckbox} onClick={handleCheckboxChange}><CustomCheckbox isChecked={isChecked}/></div>
+          <input type="checkbox" />
+          <div className={styles.customCheckbox} onClick={handleCheckboxChange}>
+            <CustomCheckbox isChecked={isChecked} />
+          </div>
           Запомнить пароль
         </label>
         <SubmitButton disabled={isLoading} type="submit" isLoading={isLoading}>
@@ -119,7 +129,8 @@ const SubmitButton = styled.button<{ isLoading: boolean }>`
 
 const InputForm = styled.input<{ isError: any }>`
   color: ${(props) => (props.isError === "required" ? "#E26F6F" : "#232323")};
-  border: ${(props) => (props.isError === "required" ? "1px solid #E26F6F" : "none")};
+  border: ${(props) =>
+    props.isError === "required" ? "1px solid #E26F6F" : "none"};
   background: #f5f5f5;
   font-weight: 400;
   font-size: 16px;
@@ -128,11 +139,13 @@ const InputForm = styled.input<{ isError: any }>`
   border-radius: 8px;
   padding: 20px;
   width: 100%;
+
+  font-family: "Helvetica 65 Medium", sans-serif;
 `;
 
-const CustomCheckbox = styled.div<{isChecked: boolean}>`
+const CustomCheckbox = styled.div<{ isChecked: boolean }>`
   background-color: ${(props) => (props.isChecked ? "#4A67FF" : "#ffffff")};
   width: 100%;
   height: 100%;
   border-radius: 2px;
-`
+`;

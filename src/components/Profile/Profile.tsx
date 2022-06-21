@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import styles from "./Profile.module.css";
-export const Profile = () => {
+
+interface IProps {
+  userName: string;
+}
+export const Profile = ({ userName }: IProps) => {
   return (
     <div className={styles.profile}>
       <div className={styles.text}>
-        Здравствуйте, <span>steve.jobs@example.com</span>
+        Здравствуйте, <span>{userName}</span>
       </div>
       <Link to="/login">
         <button className={styles.button}>Выйти</button>
