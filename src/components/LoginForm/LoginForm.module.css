@@ -16,6 +16,10 @@
   margin-top: -118px;
 }
 
+.inputWrapper {
+  margin-bottom: 20px;
+}
+
 .input {
   background: #F5F5F5;
   font-weight: 400;
@@ -25,8 +29,8 @@
   height: 60px;
   border-radius: 8px;
   border: none;
-  margin-bottom: 20px;
   padding: 20px;
+  width: 100%;
 }
 
 .button {
@@ -62,4 +66,42 @@
 
 .label {
   margin-bottom: 10px;
+}
+
+.errorRequired {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #E26F6F;
+  margin-top: 8px;
+}
+
+.errorLogin {
+  height: 60px;
+  width: 100%;
+  background: #F5E9E9;
+  border: 1px solid #E26F6F;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  margin-bottom: 27px;
+}
+
+.errorLogin span {
+  width: 20px;
+  height: 20px;
+  background: #FFC8C8;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 17px;
+  color: #EE6565;
+  margin-right: 14px;
+  margin-left: 20px;
 }
