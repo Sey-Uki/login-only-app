@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 
 interface IFormInput {
@@ -7,6 +8,8 @@ interface IFormInput {
 }
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -15,12 +18,13 @@ export const LoginForm = () => {
 
   const onSubmit = (data: IFormInput) => {
     console.log(data);
+    navigate("/profile")
   };
 
   return (
     <div className={styles.formWrapper}>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      {errors.login && (
+      {(errors?.login?.type !== "required" && errors.login) && (
             <div className={styles.errorLogin}>
               <span>!</span>
               {errors.login.message}
@@ -61,7 +65,7 @@ export const LoginForm = () => {
           <input type="checkbox" />
           Запомнить пароль
         </label>
-        <input type="submit" value="Войти" className={styles.button} />
+          <input type="submit" value="Войти" className={styles.button} />
       </form>
     </div>
   );

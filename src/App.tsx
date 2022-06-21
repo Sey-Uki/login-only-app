@@ -1,13 +1,16 @@
-import './App.css';
-import { Header } from './components/Header/Header';
-import { LoginForm } from './components/LoginForm/LoginForm';
+import { BrowserRouter } from "react-router-dom";
+import "./App.css";
+import { Header } from "./components/Header/Header";
+import { AppRoutes } from "./AppRoutes";
 
 function App() {
   return (
-    <>
-      <Header />
-      <LoginForm />
-    </>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <AppRoutes />
+      </div>
+    </BrowserRouter>
   );
 }
 
