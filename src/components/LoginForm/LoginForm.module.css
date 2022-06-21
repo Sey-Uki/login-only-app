@@ -33,20 +33,6 @@
   width: 100%;
 }
 
-.button {
-  background: #4A67FF;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 22px;
-  color: #FFFFFF;
-  height: 60px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  margin-top: 40px;
-  width: 100%;
-}
-
 .checkbox {
   display: flex;
   align-items: center;
