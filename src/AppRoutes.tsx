@@ -1,17 +1,55 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { LoginForm } from "./components/LoginForm/LoginForm";
 import { Profile } from "./components/Profile/Profile";
 
-export const AppRoutes= () => {
+export const AppRoutes = () => {
+  const [userName, setUserName] = useState(
+    localStorage.getItem("userName") || ""
+  );
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
 
-  const [userName, setUserName] = useState('');
+  const logIn = (userName: string, isRemember: boolean) => {
+    setIsLoggedIn(true);
+    setUserName(userName);
 
-    return (
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginForm setUserName={setUserName} />} />
-        <Route path="/profile" element={<Profile userName={userName} />} />
-      </Routes>
-    );
-}
+    if (isRemember) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userName", userName);
+    }
+  };
+  const logOut = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userName");
+  };
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          isLoggedIn ? <Navigate to="/profile" /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          isLoggedIn ? <Navigate to="/profile" /> : <LoginForm logIn={logIn} />
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          isLoggedIn ? (
+            <Profile userName={userName} logOut={logOut} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+    </Routes>
+  );
+};

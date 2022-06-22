@@ -10,10 +10,10 @@ interface IFormInput {
 }
 
 interface IProps {
-  setUserName: Dispatch<SetStateAction<string>>;
+  logIn: (userName: string, isRemember: boolean) => void;
 }
 
-export const LoginForm = ({ setUserName }: IProps) => {
+export const LoginForm = ({ logIn }: IProps) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -36,7 +36,7 @@ export const LoginForm = ({ setUserName }: IProps) => {
 
   const onSubmit = (data: IFormInput) => {
     startSubmitting(() => {
-      setUserName(data.login);
+      logIn(data.login, isChecked);
       navigate("/profile");
     });
   };
@@ -47,7 +47,6 @@ export const LoginForm = ({ setUserName }: IProps) => {
 
     if (loginValue && passwordValue) {
       startSubmitting();
-
     }
   };
 
