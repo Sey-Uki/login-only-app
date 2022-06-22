@@ -1,7 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
 import styled from "styled-components";
+import { CustomCheckbox } from "./CustomCheckbox/CustomCheckbox";
+import { CustomInput } from "./CustomInput/CustomInput";
+import { CustomPassword } from "./CustomPassword/CustomPassword";
 import styles from "./LoginForm.module.css";
 
 interface IFormInput {
@@ -14,16 +16,14 @@ interface IProps {
 }
 
 export const LoginForm = ({ logIn }: IProps) => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<IFormInput>({ defaultValues: { login: "", password: "" } });
+  const methods = useForm<IFormInput>({
+    defaultValues: { login: "", password: "" },
+  });
+
+  const { handleSubmit, getValues } = methods;
 
   const startSubmitting = (callback?: () => void) => {
     setIsLoading(true);
@@ -37,7 +37,6 @@ export const LoginForm = ({ logIn }: IProps) => {
   const onSubmit = (data: IFormInput) => {
     startSubmitting(() => {
       logIn(data.login, isChecked);
-      navigate("/profile");
     });
   };
 
@@ -56,58 +55,27 @@ export const LoginForm = ({ logIn }: IProps) => {
 
   return (
     <div className={styles.formWrapper}>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit, onError)}>
-        {!isLoading && errors?.login?.type !== "required" && errors.login && (
-          <div className={styles.errorLogin}>
-            <span>!</span>
-            {errors.login.message}
-          </div>
-        )}
-        <label className={styles.label}>Логин</label>
-        <div className={styles.inputWrapper}>
-          <InputForm
-            {...register("login", {
-              required: true,
-              validate: (value) =>
-                value === "steve.jobs@example.com" ||
-                `Пользователя ${value} не существует`,
-            })}
-            isError={errors?.login?.type}
-            className={styles.input}
+      <FormProvider {...methods}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit(onSubmit, onError)}
+        >
+          <CustomInput isLoading={isLoading} />
+          <CustomPassword isLoading={isLoading} />
+          <CustomCheckbox
+            isChecked={isChecked}
+            handleCheckboxChange={handleCheckboxChange}
           />
-          {errors?.login?.type === "required" && (
-            <p className={styles.errorRequired}>Обязательное поле</p>
-          )}
-        </div>
-        <label className={styles.label}>Пароль</label>
-        <div className={styles.inputWrapper}>
-          <InputForm
-            type="password"
-            {...register("password", {
-              required: true,
-              validate: (value) => value === "password" || "Неверный пароль",
-            })}
-            className={styles.input}
-            isError={errors?.password?.type}
-          />
-          {errors?.password?.type === "required" && (
-            <p className={styles.errorRequired}>Обязательное поле</p>
-          )}
-          {!isLoading && errors.password && (
-            <p className={styles.errorRequired}>{errors.password.message}</p>
-          )}
-        </div>
-        <label className={styles.checkbox}>
-          <input type="checkbox" />
-          <div className={styles.customCheckbox} onClick={handleCheckboxChange}>
-            <CustomCheckbox isChecked={isChecked} />
-          </div>
-          Запомнить пароль
-        </label>
-        <SubmitButton disabled={isLoading} type="submit" isLoading={isLoading}>
-          Войти
-        </SubmitButton>
-      </form>
+
+          <SubmitButton
+            disabled={isLoading}
+            type="submit"
+            isLoading={isLoading}
+          >
+            Войти
+          </SubmitButton>
+        </form>
+      </FormProvider>
     </div>
   );
 };
@@ -124,27 +92,4 @@ const SubmitButton = styled.button<{ isLoading: boolean }>`
   cursor: pointer;
   margin-top: 40px;
   width: 100%;
-`;
-
-const InputForm = styled.input<{ isError: any }>`
-  color: ${(props) => (props.isError === "required" ? "#E26F6F" : "#232323")};
-  border: ${(props) =>
-    props.isError === "required" ? "1px solid #E26F6F" : "none"};
-  background: #f5f5f5;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  height: 60px;
-  border-radius: 8px;
-  padding: 20px;
-  width: 100%;
-
-  font-family: "Helvetica 65 Medium", sans-serif;
-`;
-
-const CustomCheckbox = styled.div<{ isChecked: boolean }>`
-  background-color: ${(props) => (props.isChecked ? "#4A67FF" : "#ffffff")};
-  width: 100%;
-  height: 100%;
-  border-radius: 2px;
 `;

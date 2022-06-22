@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { LoginForm } from "./components/LoginForm/LoginForm";
 import { Profile } from "./components/Profile/Profile";
+import { Endpoints } from "./utils/models";
 
 export const AppRoutes = () => {
   const [userName, setUserName] = useState(
@@ -11,17 +12,22 @@ export const AppRoutes = () => {
     localStorage.getItem("isLoggedIn") === "true"
   );
 
+  const navigate = useNavigate();
+
   const logIn = (userName: string, isRemember: boolean) => {
     setIsLoggedIn(true);
     setUserName(userName);
+    navigate(Endpoints.profile);
 
     if (isRemember) {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("userName", userName);
     }
   };
+  
   const logOut = () => {
     setIsLoggedIn(false);
+    navigate(Endpoints.login);
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userName");
   };
@@ -29,24 +35,32 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/"
+        path={Endpoints.home}
         element={
-          isLoggedIn ? <Navigate to="/profile" /> : <Navigate to="/login" />
+          isLoggedIn ? (
+            <Navigate to={Endpoints.profile} />
+          ) : (
+            <Navigate to={Endpoints.login} />
+          )
         }
       />
       <Route
-        path="/login"
+        path={Endpoints.login}
         element={
-          isLoggedIn ? <Navigate to="/profile" /> : <LoginForm logIn={logIn} />
+          isLoggedIn ? (
+            <Navigate to={Endpoints.profile} />
+          ) : (
+            <LoginForm logIn={logIn} />
+          )
         }
       />
       <Route
-        path="/profile"
+        path={Endpoints.profile}
         element={
           isLoggedIn ? (
             <Profile userName={userName} logOut={logOut} />
           ) : (
-            <Navigate to="/login" />
+            <Navigate to={Endpoints.login} />
           )
         }
       />

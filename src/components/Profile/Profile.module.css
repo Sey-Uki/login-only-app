@@ -4,7 +4,7 @@
   justify-content: center;
   max-width: 767px;
   align-items: center;
-    margin: 0 auto;
+  margin: 0 auto;
   height: calc(100vh - 78px);
   margin-top: -118px;
 }

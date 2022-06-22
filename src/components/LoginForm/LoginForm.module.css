@@ -22,20 +22,6 @@
   margin-bottom: 20px;
 }
 
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  color: #1F1F1F;
-}
-
-.checkbox input {
-  display: none;
-}
-
 .label {
   margin-bottom: 10px;
 }
@@ -78,7 +64,16 @@
   margin-left: 20px;
 }
 
-.customCheckbox {
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #1F1F1F;
+}
+
+.checkbox {
   width: 20px;
   height: 20px;
   padding: 2px;
